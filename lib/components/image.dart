@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TextImage extends StatelessWidget {
   final String text;
-  final String image;
+  final  image;
   final func;
   const TextImage({super.key, required this.text, required this.image, required this.func});
 
@@ -25,7 +25,7 @@ class TextImage extends StatelessWidget {
               onTap: func,
               child: CircleAvatar(
                 radius: 80,
-                backgroundImage: NetworkImage(image),
+                backgroundImage: NetworkImage('https://eu.ui-avatars.com/api/?name=S+S'),
               ),
             )
           ],

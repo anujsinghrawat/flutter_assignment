@@ -17,6 +17,8 @@ class _HomeState extends State<Home> {
   String imgUrl = "";
   String imgUrl2 = "";
   PlatformFile? pickedFile;
+  File? _image;
+  File? _image1;
   XFile? file1;
   XFile? file2;
 
@@ -26,7 +28,10 @@ class _HomeState extends State<Home> {
     print('${file1?.path}');
 
     if (file1 == null) return;
-
+    final imageTemporary = File(file1!.path);
+    setState(() {
+      _image = imageTemporary;
+    });
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('photo has been submitted')));
   }
@@ -37,6 +42,10 @@ class _HomeState extends State<Home> {
     print('${file2?.path}');
 
     if (file2 == null) return;
+    final imageTemporary = File(file2!.path);
+    setState(() {
+      _image1 = imageTemporary;
+    });
 
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('photo has been submitted')));
@@ -52,7 +61,8 @@ class _HomeState extends State<Home> {
 
     //Create a reference for the image to be stored
     Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
-    Reference referenceImageToUpload1 = referenceDirImages.child(uniqueFileName1);
+    Reference referenceImageToUpload1 =
+        referenceDirImages.child(uniqueFileName1);
 
     //Handle errors/success
     try {
@@ -65,8 +75,8 @@ class _HomeState extends State<Home> {
     } catch (error) {
       //Some error occurred
     }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('photo has been uploaded to firebase')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('photo has been uploaded to firebase')));
   }
 
   @override
@@ -78,19 +88,17 @@ class _HomeState extends State<Home> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children:  [
-                  // ignore: prefer_const_constructors
-                  TextImage(
-                      text: "image 1",
-                      image: (imgUrl == null)  ?'https://eu.ui-avatars.com/api/?name=Anuj+Rawat': imgUrl
-                      ,func: submit1),
-                  TextImage(
-                      text: "image 2",
-                      image: imgUrl2 == null ?'https://eu.ui-avatars.com/api/?name=suraj+Rawat':imgUrl2,
-                      func: submit2),
-                ]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              // ignore: prefer_const_constructors
+              TextImage(
+                  text: "image 1",
+                  image: imgUrl,
+                  func: submit1),
+              TextImage(
+                  text: "image 2",
+                  image: imgUrl2,
+                  func: submit2),
+            ]),
             TextButton(
                 onPressed: submit,
                 child: Text('Submit',
@@ -104,4 +112,19 @@ class _HomeState extends State<Home> {
           ],
         ));
   }
+}
+
+Widget myButton({required String text, required Function func}) {
+  return TextButton(
+      onPressed: () {
+        func();
+      },
+      child: Text(text,
+          style: TextStyle(
+            fontSize: 20,
+          )),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.blue),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+      ));
 }

@@ -35,6 +35,7 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker: ^0.8.7
+  path_provider: ^2.0.13
 
 dev_dependencies:
   flutter_lints: ^2.0.0
